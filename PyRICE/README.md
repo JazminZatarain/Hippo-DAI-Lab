@@ -61,11 +61,11 @@ To use the uncertainty modules, additional packages need to be installed to conn
 │   ├── ProblemFormulation.py       # Contains definition of function to run an optimization 
 │   └── README.md    
 ├── Verification
-│   └── OriginalPyRICE              # Used to check invariance throughout refactoring process
-│       ├── TestData                # Contains pickled data from Ivar's original PyRICE model
-│       ├── SavedModelResults.ipynb # Run current model with parameter combos and save pickled results
-│       ├── Test.py                 # Contains class for checking results for equality (current vs. original)
-│       └── VerificationAgainstOriginalPyRICE.ipynb      # Executes checks
+│   ├── OriginalPyRICE              # Used to check invariance throughout refactoring process
+│   │   ├── TestData                # Contains pickled data from Ivar's original PyRICE model
+│   │   ├── SavedModelResults.ipynb # Run current model with parameter combos and save pickled results
+│   │   ├── Test.py                 # Contains class for checking results for equality (current vs. original)
+│   │   └── VerificationAgainstOriginalPyRICE.ipynb      # Executes checks
 │   └── OriginalRICE                # Used to verify results of PyRICE model against original RICE2010 results
 │       ├── OutputImages          
 │       └── VerificationAgainstOriginalRICE.ipynb               
