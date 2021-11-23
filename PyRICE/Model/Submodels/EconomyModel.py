@@ -144,8 +144,7 @@ class EconomyModel:
         # original RICE parameters dam_frac with SLR
         if damage_function.__eq__(DamageFunction.NORDHAUS):
             self.dam_frac[:, 0] = (damage_parameters[:, 0] * temp_atm[0]
-                                        + damage_parameters[:, 1] * (
-                                                temp_atm[0] ** damage_parameters[:, 2])) * 0.01
+                                        + damage_parameters[:, 1] * (temp_atm[0] ** damage_parameters[:, 2])) * 0.01
 
         # Damage function Newbold & Daigneault
         elif damage_function.__eq__(DamageFunction.NEWBOLD):
@@ -185,9 +184,6 @@ class EconomyModel:
         self.CCA[:, 0] = self.Eind[:, 0]
         self.CCA_tot[:, 0] = self.CCA[:, 0] + self.cumetree[:, 0]
 
-        # # doesnt do much here
-        # self.partfract = 1
-
     def init_net_economy(self, data_sets, miu, S, elasticity_of_damages):
 
         # Cost of climate_model change to economy
@@ -214,9 +210,6 @@ class EconomyModel:
         # consumption given the investments
         self.C[:, 0] = self.Y[:, 0] - self.I[:, 0]
 
-        # placeholder for different damagefactor per quintile
-        # quintile_damage_factor = 1
-
         # calculate pre damage consumption aggregated per region
         self.pre_damage_total__region_consumption[:, 0] = self.C[:, 0] + self.damages[:, 0]
 
@@ -227,21 +220,20 @@ class EconomyModel:
         for i in range(0, self.n_regions):
             self.damage_share[i, :] = self.damage_share[i, :] / sum_damage[i]
 
-            # calculate disaggregated per capita consumption based on income shares BEFORE damages
+        # calculate disaggregated per capita consumption based on income shares BEFORE damages
         self.CPC_pre_damage[2005] = ((self.pre_damage_total__region_consumption[:,
                                       0] * data_sets.RICE_income_shares.transpose()) / (
                                              self.region_pop[:, 0] * (1 / 5))) * 1000
 
         # calculate disaggregated per capita consumption based on income shares AFTER damages
-        self.CPC_post_damage[2005] = self.CPC_pre_damage[2005] - (
-                ((self.damages[:, 0] * self.damage_share.transpose()) / (
-                            self.region_pop[:, 0] * (1 / 5))) * 1000)
+        self.CPC_post_damage[2005] = \
+            self.CPC_pre_damage[2005] - (((self.damages[:, 0] * self.damage_share.transpose()) /
+                                          (self.region_pop[:, 0] * (1 / 5))) * 1000)
 
         # calculate damage per consumpion in thousands of US dollarsa
-        self.climate_impact_relative_to_capita[2005] = ((self.damages[:,
-                                                         0] * self.damage_share.transpose() * 10 ** 12) / (
-                                                                0.2 * self.region_pop[:, 0] * 10 ** 6)) / (
-                                                               self.CPC_post_damage[2005] * 1000)
+        self.climate_impact_relative_to_capita[2005] = \
+            ((self.damages[:, 0] * self.damage_share.transpose() * 10 ** 12) /
+             (0.2 * self.region_pop[:, 0] * 10 ** 6)) / (self.CPC_post_damage[2005] * 1000)
 
         # consumption per capita
         self.CPC[:, 0] = (1000 * self.C[:, 0]) / self.region_pop[:, 0]
@@ -272,6 +264,7 @@ class EconomyModel:
 
         # Use base projections for population and TFP and sigma growth
         if scenario_pop_gdp == 0 and longrun_scenario == 0:
+
             # calculate population at time t
             self.region_pop[:, t] = self.region_pop[:, t - 1] * 2.71828 ** (
                         self.region_pop_gr[:, t] * 10)
@@ -311,29 +304,31 @@ class EconomyModel:
             self.k_region[:, t] = np.where(self.k_region[:, t] > 1, self.k_region[:, t], 1)
 
             # determine Ygross at time t
-            self.Y_gross[:, t] = self.tfp_region[:, t] * (
-                        (self.region_pop[:, t] / 1000) ** (1 - self.gama)) * (
-                                              self.k_region[:, t] ** self.gama)
+            self.Y_gross[:, t] = \
+                self.tfp_region[:, t] * ((self.region_pop[:, t] / 1000) ** (1 - self.gama)) * \
+                (self.k_region[:, t] ** self.gama)
 
             # lower bound Y_Gross
             self.Y_gross[:, t] = np.where(self.Y_gross[:, t] > 0, self.Y_gross[:, t], 0)
 
             # calculate the sigma growth adjust with uncertainty range and the emission rate development
             if t == 1:
-                self.Sigma_gr[:, t] = (self.sigma_growth_data[:, 4] + (
-                        self.sigma_growth_data[:, 2] - self.sigma_growth_data[:, 4]))
+                self.Sigma_gr[:, t] = \
+                    (self.sigma_growth_data[:, 4] + (self.sigma_growth_data[:, 2] - self.sigma_growth_data[:, 4]))
 
-                self.sigma_region[:, t] = self.sigma_region[:, t - 1] * (
-                        2.71828 ** (self.Sigma_gr[:, t] * 10)) * self.emission_factor
+                self.sigma_region[:, t] = \
+                    self.sigma_region[:, t - 1] * (2.71828 ** (self.Sigma_gr[:, t] * 10)) * self.emission_factor
 
             if t > 1:
-                self.Sigma_gr[:, t] = (self.sigma_growth_data[:, 4] + (
-                        self.Sigma_gr[:, t - 1] - self.sigma_growth_data[:, 4]) * (
-                                               1 - self.sigma_growth_data[:, 3])) * long_run_nordhaus_sigma
+                self.Sigma_gr[:, t] = \
+                    (self.sigma_growth_data[:, 4] + (self.Sigma_gr[:, t - 1] - self.sigma_growth_data[:, 4]) *
+                    (1 - self.sigma_growth_data[:, 3])) * long_run_nordhaus_sigma
 
                 self.sigma_region[:, t] = self.sigma_region[:, t - 1] * (2.71828 ** (self.Sigma_gr[:, t] * 10))
+
         if longrun_scenario != 1:
             if scenario_sigma == 0:  # medium SSP AEEI (base RICE)
+
                 # calculate the sigma growth and the emission rate development
                 if t == 1:
                     self.Sigma_gr[:, t] = (self.sigma_growth_data[:, 4] + (
@@ -350,6 +345,7 @@ class EconomyModel:
                     self.sigma_region[:, t] = self.sigma_region[:, t - 1] * (2.71828 ** (self.Sigma_gr[:, t] * 10))
 
             if scenario_sigma == 1:  # low SSP AEEI
+
                 # calculate the sigma growth and the emission rate development
                 if t == 1:
                     self.Sigma_gr_RICE[:, t] = (self.sigma_growth_data[:, 4] + (
@@ -387,8 +383,9 @@ class EconomyModel:
 
                     self.sigma_region[:, t] = self.sigma_region[:, t - 1] * (2.71828 ** (self.Sigma_gr[:, t] * 10))
 
-                    # calculate emission control rate under EMA
+        # calculate emission control rate under EMA
         if model_spec.__eq__(ModelSpec.EMA):
+
             # control rate is maximum after target period, otherwise linearly increase towards that point from t[0]
             if t > 1:
                 for index in range(0, self.n_regions):
@@ -530,14 +527,14 @@ class EconomyModel:
             self.damage_share[i, :] = self.damage_share[i, :] / sum_damage[i]
 
             # calculate disaggregated per capita consumption based on income shares BEFORE damages
-        self.CPC_pre_damage[year] = ((self.pre_damage_total__region_consumption[:,
-                                                t] * data_sets.RICE_income_shares.transpose()) / (
-                                                       self.region_pop[:, t] * (1 / 5))) * 1000
+        self.CPC_pre_damage[year] = \
+            ((self.pre_damage_total__region_consumption[:, t] * data_sets.RICE_income_shares.transpose()) /
+             (self.region_pop[:, t] * (1 / 5))) * 1000
 
         # calculate disaggregated per capita consumption based on income shares AFTER damages
-        self.CPC_post_damage[year] = self.CPC_pre_damage[year] - \
-                                     (((self.damages[:, t] * self.damage_share.transpose()) / (self.region_pop[:, t] * (
-                                                                                                       1 / 5))) * 1000)
+        self.CPC_post_damage[year] = \
+            self.CPC_pre_damage[year] - (((self.damages[:, t] * self.damage_share.transpose()) /
+                                          (self.region_pop[:, t] * (1 / 5))) * 1000)
 
         # check for lower bound on C
         self.CPC_pre_damage[year] = np.where(self.CPC_pre_damage[year] > self.CPC_lo,
@@ -546,11 +543,9 @@ class EconomyModel:
                                                         self.CPC_post_damage[year], self.CPC_lo)
 
         # calculate damage per quintile equiv
-        self.climate_impact_relative_to_capita[year] = ((self.damages[:,
-                                                                   t] * self.damage_share.transpose() * 10 ** 12) / (
-                                                                          0.2 * self.region_pop[:,
-                                                                                t] * 10 ** 6)) / (
-                                                                         self.CPC_pre_damage[year] * 1000)
+        self.climate_impact_relative_to_capita[year] = \
+            ((self.damages[:, t] * self.damage_share.transpose() * 10 ** 12) /
+             (0.2 * self.region_pop[:, t] * 10 ** 6)) / (self.CPC_pre_damage[year] * 1000)
 
         self.climate_impact_relative_to_capita[year] = np.where(
             self.climate_impact_relative_to_capita[year] > 1, 1,

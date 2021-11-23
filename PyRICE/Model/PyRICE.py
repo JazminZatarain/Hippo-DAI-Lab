@@ -38,8 +38,6 @@ class PyRICE(object):
         self.welfare_function = welfare_function
         self.overwrite_damage_function = overwrite_f
 
-        # ######################### SAMPLING OF DAMAGE FUNCTIONS ##########################
-
         # arrange simulation timeline
         for i in range(0, self.steps):
             self.tperiod.append((i * self.tstep) + self.start_year)
@@ -90,7 +88,7 @@ class PyRICE(object):
 
                  # RICE Levers
                  sr=0.248,  # BASE sr for the world
-                 miu=13,  # 2135 in RICE opt scenario when global emissions are near zero
+                 miu=2135,  # 2135 in RICE opt scenario when global emissions are near zero
                  irstp=0.015,  # Initial rate of social time preference  (RICE2010 OPT))
 
                  precision=10,
@@ -154,9 +152,8 @@ class PyRICE(object):
                                                  self.climate_model.temp_atm, self.dam_frac_global, self.miu)
 
         # Instantiate the net economy in economic sub-model
-        self.climate_impact_relative_to_capita, self.CPC_post_damage, self.CPC, \
-        self.region_pop, self.damages, self.Y = \
-            self.econ_model.init_net_economy(self.data_sets, self.miu, self.S, self.elasticity_of_damages)
+        self.climate_impact_relative_to_capita, self.CPC_post_damage, self.CPC, self.region_pop, self.damages, self.Y \
+            = self.econ_model.init_net_economy(self.data_sets, self.miu, self.S, self.elasticity_of_damages)
 
         # Set up Utility
         self.utility_model.set_up_utility(self.regions_list, ini_suf_threshold, self.climate_impact_relative_to_capita,
@@ -178,7 +175,7 @@ class PyRICE(object):
                                                            scenario_sigma, self.model_spec, self.miu,
                                                            self.limmiu, self.miu_period, self.fosslim)
 
-            # Run Carbon Cycle sub-model
+            # Run carbon cycle sub-model
             fco22x, forc, self.E_worldwilde_per_year = self.carbon_model.run(t, E, self.limits)
 
             # Run climate sub-model
@@ -201,7 +198,7 @@ class PyRICE(object):
                 self.CPC, self.region_pop, self.damages, self.Y, self.CPC_lo, climate_impact_relative_to_capita,
                 CPC_post_damage)
 
-        # Prepare final OUTCOMES OF INTEREST
+        # Prepare final outcomes of interest
         self.data_dict = self.utility_model.get_outcomes(
             self.temp_atm, self.E_worldwilde_per_year, self.region_pop, self.CPC_pre_damage, self.CPC_post_damage,
             self.CPC, self.start_year, self.end_year, self.tstep, precision=precision)

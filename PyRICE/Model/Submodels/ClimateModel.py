@@ -22,19 +22,10 @@ class ClimateModel:
         # Climate model parameter
         # self.lam = self.carbon_model.fco22x / self.t2xco2
 
-        """
-        ######################## CLIMATE PARAMETERS ########################
-        """
-
         # Increase temperature of atmosphere [dC from 1900]
         self.temp_atm = np.zeros(steps)
         # Increase temperature of lower oceans [dC from 1900]
         self.temp_ocean = np.zeros(steps)
-
-        """
-        ################# CLIMATE PARAMETER INTITIALISATION ################
-        """
-        # checked with RICE2010
 
         # Atmospheric temperature
         self.temp_atm[0] = self.tatm0
