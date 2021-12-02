@@ -12,7 +12,6 @@ import os
 # EMA
 from ema_workbench.em_framework.optimization import EpsilonProgress
 from ema_workbench import (Model, RealParameter, IntegerParameter, MultiprocessingEvaluator, ema_logging, Constant)
-from ema_workbench.em_framework.optimization import EpsNSGAII
 
 ema_logging.log_to_stderr(ema_logging.INFO)
 
@@ -98,8 +97,7 @@ def run_optimization(damage_function=DamageFunction.NORDHAUS,
         convergence_metrics = [EpsilonProgress()]
 
         with MultiprocessingEvaluator(model) as evaluator:
-            results, convergence = evaluator.optimize(algorithm=EpsNSGAII,
-                                                      nfe=nfe,
+            results, convergence = evaluator.optimize(nfe=nfe,
                                                       searchover='levers',
                                                       epsilons=epsilons,
                                                       convergence=convergence_metrics,
@@ -116,8 +114,7 @@ def run_optimization(damage_function=DamageFunction.NORDHAUS,
     else:
 
         with MultiprocessingEvaluator(model) as evaluator:
-            results = evaluator.optimize(algorithm=EpsNSGAII,
-                                         nfe=nfe,
+            results = evaluator.optimize(nfe=nfe,
                                          searchover='levers',
                                          epsilons=epsilons,
                                          constraints=constraints)
