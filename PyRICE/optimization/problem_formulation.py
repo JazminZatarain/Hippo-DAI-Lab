@@ -10,15 +10,19 @@ from PyRICE.optimization.outcomes_and_epsilons import get_outcomes_and_epsilons
 import os
 
 # EMA
-from ema_workbench.em_framework.optimization import EpsilonProgress
-from ema_workbench import (Model, RealParameter, IntegerParameter, MultiprocessingEvaluator, ema_logging, Constant)
+from ema_workbench.em_framework.optimization import (EpsilonProgress,
+                                                     ArchiveLogger)
+from ema_workbench import (Model, RealParameter, IntegerParameter,
+                           MultiprocessingEvaluator, ema_logging, Constant)
 
 ema_logging.log_to_stderr(ema_logging.INFO)
 
 
 def define_path_name(damage_function, welfare_function, nfe, prefix='results'):
     """
-    Define path and file name such that it can be used to save results and/or covergence data.
+    Define path and file name such that it can be used to save results and/or
+    covergence data.
+
     @param damage_function: DamageFunction
     @param welfare_function: WelfareFunction
     @param nfe: integer
@@ -33,9 +37,25 @@ def define_path_name(damage_function, welfare_function, nfe, prefix='results'):
                 prefix + \
                 '.csv'
 
-    folder = '/results/'
-    directory = os.path.dirname(os.path.realpath(__file__))
-    path = directory + folder + file_name
+
+    directory = get_directory(damage_function, welfare_function)
+    path = os.path.join(directory, file_name)
+
+    return path
+
+
+def get_directory(damage_function, welfare_function):
+    folder = 'results'
+    directory = os.path.abspath(os.path.dirname(os.path.realpath(__file__)))
+    path = os.path.join(directory, folder, damage_function.name,
+                        welfare_function.name)
+
+    if not os.path.exists(path):
+        try:
+            os.makedirs(path)
+        except OSError:
+            print("Creation of the directory failed")
+            raise
 
     return path
 
@@ -94,7 +114,13 @@ def run_optimization(damage_function=DamageFunction.NORDHAUS,
     # Run optimization
     if with_convergence:
 
-        convergence_metrics = [EpsilonProgress()]
+        directory = get_directory(damage_function, welfare_function)
+
+        convergence_metrics = [EpsilonProgress(),
+                               ArchiveLogger(directory,
+                                             [l.name for l in model.levers],
+                                             [o.name for o in model.outcomes
+                                              if o.kind!=o.INFO])]
 
         with MultiprocessingEvaluator(model) as evaluator:
             results, convergence = evaluator.optimize(nfe=nfe,
@@ -126,7 +152,7 @@ def run_optimization(damage_function=DamageFunction.NORDHAUS,
 
 if __name__ == '__main__':
 
-    n = 200000
+    n = 2000
 
     run_optimization(welfare_function=WelfareFunction.UTILITARIAN,
                      damage_function=DamageFunction.NORDHAUS,
