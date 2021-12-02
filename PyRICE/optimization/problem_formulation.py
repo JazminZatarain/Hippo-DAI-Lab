@@ -126,8 +126,28 @@ def run_optimization(damage_function=DamageFunction.NORDHAUS,
 
 if __name__ == '__main__':
 
+    n = 200000
+
     run_optimization(welfare_function=WelfareFunction.UTILITARIAN,
                      damage_function=DamageFunction.NORDHAUS,
-                     nfe=10000,
+                     nfe=n,
+                     saving_results=True,
+                     with_convergence=True)
+
+    run_optimization(welfare_function=WelfareFunction.UTILITARIAN,
+                     damage_function=DamageFunction.WEITZMAN,
+                     nfe=n,
+                     saving_results=True,
+                     with_convergence=True)
+
+    run_optimization(welfare_function=WelfareFunction.SUFFICIENTARIAN,
+                     damage_function=DamageFunction.NORDHAUS,
+                     nfe=n,
+                     saving_results=True,
+                     with_convergence=True)
+
+    run_optimization(welfare_function=WelfareFunction.SUFFICIENTARIAN,
+                     damage_function=DamageFunction.WEITZMAN,
+                     nfe=n,
                      saving_results=True,
                      with_convergence=True)
