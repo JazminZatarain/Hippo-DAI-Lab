@@ -122,7 +122,7 @@ def run_optimization(damage_function=DamageFunction.NORDHAUS,
                                              [o.name for o in model.outcomes
                                               if o.kind!=o.INFO])]
 
-        with MultiprocessingEvaluator(model) as evaluator:
+        with MultiprocessingEvaluator(model, n_processes=50) as evaluator:
             results, convergence = evaluator.optimize(nfe=nfe,
                                                       searchover='levers',
                                                       epsilons=epsilons,
@@ -139,7 +139,7 @@ def run_optimization(damage_function=DamageFunction.NORDHAUS,
 
     else:
 
-        with MultiprocessingEvaluator(model) as evaluator:
+        with MultiprocessingEvaluator(model, n_processes=50) as evaluator:
             results = evaluator.optimize(nfe=nfe,
                                          searchover='levers',
                                          epsilons=epsilons,
@@ -152,7 +152,7 @@ def run_optimization(damage_function=DamageFunction.NORDHAUS,
 
 if __name__ == '__main__':
 
-    n = 2000
+    n = 200000
 
     run_optimization(welfare_function=WelfareFunction.UTILITARIAN,
                      damage_function=DamageFunction.NORDHAUS,
