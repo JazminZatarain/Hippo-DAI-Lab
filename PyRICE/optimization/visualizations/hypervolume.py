@@ -171,4 +171,4 @@ def plot_hypervolumes(hypervolume_dict, saving=False):
         directory = os.getcwd()
         root_directory = os.path.dirname(directory)
         visualization_folder = root_directory + '/optimization/outputimages/'
-        fig.savefig(visualization_folder + "hypervolume.png", dpi=800, pad_inches=0.2)
+        fig.savefig(visualization_folder + "hypervolume.png", dpi=200, pad_inches=0.2)

@@ -59,4 +59,4 @@ def visualize_epsilon_progress(saving=False):
         directory = os.getcwd()
         # root_directory = os.path.dirname(directory)
         visualization_folder = directory + '/outputimages/'
-        fig.savefig(visualization_folder + "convergence_epsilon_progress.png", dpi=400, pad_inches=0.2)
+        fig.savefig(visualization_folder + "convergence_epsilon_progress.png", dpi=200, pad_inches=0.2)

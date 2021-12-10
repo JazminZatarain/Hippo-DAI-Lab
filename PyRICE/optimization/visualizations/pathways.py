@@ -196,7 +196,7 @@ def visualize(output_lists_WS, output_lists_WU, output_lists_NS, output_lists_NU
         directory = os.getcwd()
         root_directory = os.path.dirname(directory)
         visualization_folder = root_directory + '/optimization/outputimages/'
-        fig.savefig(visualization_folder + "pathways.png", dpi=800, pad_inches=0.2)
+        fig.savefig(visualization_folder + "pathways.png", dpi=200, pad_inches=0.2)
 
 
 if __name__ == '__main__':
