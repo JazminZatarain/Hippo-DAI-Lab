@@ -8,7 +8,6 @@ import sys
 import os
 
 # Import data_dict sets, own enums and model limits
-from PyRICE.model.enumerations import *
 from PyRICE.model.model_limits import *
 from PyRICE.model.data_sets import *
 
@@ -281,7 +280,7 @@ class PyRICE(object):
         @param scenario_limmiu: int: availability of negative emissions technology (yes, no)
         @param scenario_elasticity_of_damages: int: damage relation for lower income groups
         @param egalitarian_discounting: int: egalitarian discounting
-        @param prioritarian_discounting: int: how much the worst-off consumption needs to grow each timestep to allow discou.
+        @param prioritarian_discounting: int: how much the worst-off cons needs to grow each timestep to allow discou.
         @param miu_period: float ((miu - starting_year) / tstep)
         """
         # Get controls from RICE optimal run

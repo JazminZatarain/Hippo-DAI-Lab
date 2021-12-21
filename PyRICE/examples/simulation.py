@@ -5,9 +5,10 @@ Example script to run the PyRICE model with the Nordhaus policy.
 # Imports
 
 from PyRICE.model.pyrice import PyRICE
+from PyRICE.model.enumerations import *
+
 
 # Specification of parameters
-from PyRICE.model.enumerations import *
 
 model_specification = ModelSpec.STANDARD
 damage_function = DamageFunction.NORDHAUS
@@ -46,22 +47,22 @@ print(f'aggregated_utility: \t\t{better_results.aggregated_utility}')
 
 # Dataframe on spatially aggregated variables of interest
 print('\nDataframe on spatially aggregated variables of interest')
-print(better_results.df_main)
+print(better_results.df_main.head())
 
 # Dataframe on spatially and temporally disaggregated population
 print('\nDataframe on spatially and temporally disaggregated population')
-print(better_results.df_population)
+print(better_results.df_population.head())
 
 # Dataframe on spatially disaggregated CPC
 print('\nDataframe on spatially disaggregated CPC')
-print(better_results.df_cpc)
+print(better_results.df_cpc.head())
 
 # Dataframe on CPC pre damage
 # Cell entries represent quintiles
 print('\nDataframe on CPC pre damage')
-print(better_results.df_cpc_pre_damage)
+print(better_results.df_cpc_pre_damage.head())
 
 # Dataframe on CPC post damage
 # Cell entries represent quintiles.
 print('\nDataframe on CPC post damage')
-print(better_results.df_cpc_post_damage)
+print(better_results.df_cpc_post_damage.head())

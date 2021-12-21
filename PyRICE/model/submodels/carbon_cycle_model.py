@@ -110,7 +110,6 @@ class CarbonCycleModel:
                 self.mat[t + 1] = limits.mat_lo
 
         # Radiative forcing
-
         # Exogenous forcings from other GHG
         # rises linearly from 2010 to 2100 from -0.060 to 0.3 then becomes stable in RICE -  UPDATE FOR DICE2016R
 

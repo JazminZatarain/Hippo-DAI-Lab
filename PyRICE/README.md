@@ -55,13 +55,19 @@ To use the uncertainty modules, additional packages need to be installed to conn
 │   ├── model_limits.py                         
 │   └── pyrice.py                         # Main model
 ├── optimization
-│   ├── results                           # contains results and convergence data in csv format         
+│   ├── outputimages         
 │   ├── problemformulations               # contains files to run optimizations w/ specific problem formulations
 │   │   ├── nordhaus_utilitarian.py          
 │   │   ├── nordhaus_sufficientarian.py         
 │   │   ├── weitzman_utilitarian.py      
 │   │   └── weitzman_sufficientarian.py   
-│   ├── convergence.ipynb                 # Notebook to view convergence 
+│   ├── results                           # contains results and convergence data in csv format 
+│   ├── visualizations                                
+│   │   ├── convergence.ipynb             # Notebook to visualize convergence
+│   │   ├── epsilon_progress.py           # Contains functions to compute and visualize epsilon progress
+│   │   ├── hypervolume.py                # Contains functions to compute and visualize Hypervolume
+│   │   ├── pathways.ipynb                # Notebook to visualize pathways 
+│   │   └── pathways.py                   # Contains functions to visualize pathways
 │   ├── outcomes_and_epsilons.py          # Contains function that returns outcomes and epsilons  
 │   ├── problem_formulation.py            # Contains definition of function to run an optimization 
 │   └── README.md    

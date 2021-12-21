@@ -10,19 +10,15 @@ from PyRICE.optimization.outcomes_and_epsilons import get_outcomes_and_epsilons
 import os
 
 # EMA
-from ema_workbench.em_framework.optimization import (EpsilonProgress,
-                                                     ArchiveLogger)
-from ema_workbench import (Model, RealParameter, IntegerParameter,
-                           MultiprocessingEvaluator, ema_logging, Constant)
+from ema_workbench.em_framework.optimization import (EpsilonProgress, ArchiveLogger)
+from ema_workbench import (Model, RealParameter, IntegerParameter, MultiprocessingEvaluator, ema_logging, Constant)
 
 ema_logging.log_to_stderr(ema_logging.INFO)
 
 
 def define_path_name(damage_function, welfare_function, nfe, prefix='results'):
     """
-    Define path and file name such that it can be used to save results and/or
-    covergence data.
-
+    Define path and file name such that it can be used to save results and/or covergence data.
     @param damage_function: DamageFunction
     @param welfare_function: WelfareFunction
     @param nfe: integer
@@ -37,7 +33,6 @@ def define_path_name(damage_function, welfare_function, nfe, prefix='results'):
                 prefix + \
                 '.csv'
 
-
     directory = get_directory(damage_function, welfare_function)
     path = os.path.join(directory, file_name)
 
@@ -45,6 +40,13 @@ def define_path_name(damage_function, welfare_function, nfe, prefix='results'):
 
 
 def get_directory(damage_function, welfare_function):
+    """
+    Create a directory if necessary.
+    @param damage_function: DamageFunction
+    @param welfare_function: WelfareFunction
+    @return:
+        path: string
+    """
     folder = 'results'
     directory = os.path.abspath(os.path.dirname(os.path.realpath(__file__)))
     path = os.path.join(directory, folder, damage_function.name,
@@ -108,9 +110,6 @@ def run_optimization(damage_function=DamageFunction.NORDHAUS,
 
     constraints = []
 
-    # only needed on IPython console within Anaconda
-    __spec__ = "ModuleSpec(name='builtins', loader=<class '_frozen_importlib.BuiltinImporter'>)"
-
     # Run optimization
     if with_convergence:
 
@@ -120,7 +119,7 @@ def run_optimization(damage_function=DamageFunction.NORDHAUS,
                                ArchiveLogger(directory,
                                              [l.name for l in model.levers],
                                              [o.name for o in model.outcomes
-                                              if o.kind!=o.INFO])]
+                                              if o.kind != o.INFO])]
 
         with MultiprocessingEvaluator(model, n_processes=50) as evaluator:
             results, convergence = evaluator.optimize(nfe=nfe,
@@ -152,28 +151,9 @@ def run_optimization(damage_function=DamageFunction.NORDHAUS,
 
 if __name__ == '__main__':
 
-    n = 200000
-
+    n = 100000
     run_optimization(welfare_function=WelfareFunction.UTILITARIAN,
                      damage_function=DamageFunction.NORDHAUS,
-                     nfe=n,
-                     saving_results=True,
-                     with_convergence=True)
-
-    run_optimization(welfare_function=WelfareFunction.UTILITARIAN,
-                     damage_function=DamageFunction.WEITZMAN,
-                     nfe=n,
-                     saving_results=True,
-                     with_convergence=True)
-
-    run_optimization(welfare_function=WelfareFunction.SUFFICIENTARIAN,
-                     damage_function=DamageFunction.NORDHAUS,
-                     nfe=n,
-                     saving_results=True,
-                     with_convergence=True)
-
-    run_optimization(welfare_function=WelfareFunction.SUFFICIENTARIAN,
-                     damage_function=DamageFunction.WEITZMAN,
                      nfe=n,
                      saving_results=True,
                      with_convergence=True)

@@ -15,7 +15,10 @@ class Check:
     """
 
     def __init__(self, quick=False, save=False):
-
+        """
+        @param quick: Boolean
+        @param save: Boolean
+        """
         self.quick = quick
         self.start_time = time.time()
 
