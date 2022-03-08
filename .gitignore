@@ -178,3 +178,14 @@ pip-log.txt
 
 # Mac crap
 .DS_Store
+*.pyc
+PyRICE/model/__pycache__/data_sets.cpython-39.pyc
+PyRICE/model/__pycache__/enumerations.cpython-39.pyc
+PyRICE/model/__pycache__/model_limits.cpython-39.pyc
+PyRICE/model/__pycache__/pyrice.cpython-39.pyc
+PyRICE/model/submodels/__pycache__/carbon_cycle_model.cpython-39.pyc
+PyRICE/model/submodels/__pycache__/climate_model.cpython-39.pyc
+PyRICE/model/submodels/__pycache__/economy_model.cpython-39.pyc
+PyRICE/model/submodels/__pycache__/utility_model.cpython-39.pyc
+PyRICE/optimization/__pycache__/outcomes_and_epsilons.cpython-39.pyc
+PyRICE/optimization/visualizations/__pycache__/pathways.cpython-39.pyc

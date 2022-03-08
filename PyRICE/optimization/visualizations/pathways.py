@@ -136,7 +136,8 @@ def visualize_one_column(output_lists, axes, column_index, problem_formulation):
     """
     output_Y_list, output_E_list, output_U_list, output_D_list, output_T_list = output_lists
 
-    cols = ['Weitzman\nSufficientarian', 'Weitzman\nUtilitarian', 'Nordhaus\nSufficientarian', 'Nordhaus\nUtilitarian']
+    cols = ['Weitzman\nSufficientarian', 'Weitzman\nUtilitarian',
+            'Nordhaus\nSufficientarian', 'Nordhaus\nUtilitarian']
     for ax, col in zip(axes[0], cols):
         ax.set_title(col, fontsize=22)
 
@@ -148,27 +149,32 @@ def visualize_one_column(output_lists, axes, column_index, problem_formulation):
     for output_Y in output_Y_list:
         axes[0, column_index].set_ylabel('Economic output (trillion $)')
         axes[0, column_index].xaxis.set_major_locator(MaxNLocator(xticks))
-        axes[0, column_index].plot(output_Y, color=color, alpha=alpha, linewidth=linewidth, label=problem_formulation)
+        axes[0, column_index].plot(output_Y, color=color, alpha=alpha, linewidth=linewidth,
+                                   label=problem_formulation)
 
     for output_E in output_E_list:
         axes[1, column_index].set_ylabel('Global emissions (GTon CO2)')
         axes[1, column_index].xaxis.set_major_locator(MaxNLocator(xticks))
-        axes[1, column_index].plot(output_E, color=color, alpha=alpha, linewidth=linewidth, label=problem_formulation)
+        axes[1, column_index].plot(output_E, color=color, alpha=alpha, linewidth=linewidth,
+                                   label=problem_formulation)
 
     for output_U in output_U_list:
         axes[2, column_index].set_ylabel('Utility (W)')
         axes[2, column_index].xaxis.set_major_locator(MaxNLocator(xticks))
-        axes[2, column_index].plot(output_U, color=color, alpha=alpha, linewidth=linewidth, label=problem_formulation)
+        axes[2, column_index].plot(output_U, color=color, alpha=alpha, linewidth=linewidth,
+                                   label=problem_formulation)
 
     for output_D in output_D_list:
         axes[3, column_index].set_ylabel('Economic damages (trillion $)')
         axes[3, column_index].xaxis.set_major_locator(MaxNLocator(xticks))
-        axes[3, column_index].plot(output_D, color=color, alpha=alpha, linewidth=linewidth, label=problem_formulation)
+        axes[3, column_index].plot(output_D, color=color, alpha=alpha, linewidth=linewidth,
+                                   label=problem_formulation)
 
     for output_T in output_T_list:
         axes[4, column_index].set_ylabel('Increase in atmospheric \ntemperature (Celsius)')
         axes[4, column_index].xaxis.set_major_locator(MaxNLocator(xticks))
-        axes[4, column_index].plot(output_T, color=color, alpha=alpha, linewidth=linewidth, label=problem_formulation)
+        axes[4, column_index].plot(output_T, color=color, alpha=alpha, linewidth=linewidth,
+                                   label=problem_formulation)
         axes[4, column_index].set_xlabel('Time (years)')
 
 
@@ -182,8 +188,10 @@ def visualize(output_lists_WS, output_lists_WU, output_lists_NS, output_lists_NU
     """
     sns.set(font_scale=1.35)
     sns.set_style("whitegrid")
-    fig, axes = plt.subplots(nrows=5, ncols=4, sharex='all', figsize=(22, 18), tight_layout=True, sharey='row')
-    plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0.5, hspace=0.8)
+    fig, axes = plt.subplots(nrows=5, ncols=4, sharex='all', figsize=(22, 18),
+                             tight_layout=True, sharey='row')
+    plt.subplots_adjust(left=None, bottom=None, right=None, top=None,
+                        wspace=0.5, hspace=0.8)
 
     visualize_one_column(output_lists_WS, axes, column_index=0, problem_formulation='WS')
     visualize_one_column(output_lists_WU, axes, column_index=1, problem_formulation='WU')
